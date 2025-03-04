@@ -18,11 +18,14 @@ jobs:
               with:
                   aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
                   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                  aws-region: us-east-1 # Public ECR is always in us-east-1
+                  aws-region: us-east-1
 
             - name: Ensure ECR Public Repository Exists
               run: |
-                  aws ecr-public describe-repositories --repository-name week4lab || aws ecr-public create-repository --repository-name week4lab
+                  if ! aws ecr-public describe-repositories --query 'repositories[?repositoryName==`week4lab`]' | grep "repositoryName"; then
+                    echo "Repository not found. Creating..."
+                    aws ecr-public create-repository --repository-name week4lab
+                  fi
 
             - name: Login to Amazon ECR Public
               run: |
