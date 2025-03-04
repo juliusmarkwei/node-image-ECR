@@ -36,8 +36,8 @@ jobs:
 
             - name: Tag Docker Image
               run: |
-                  docker tag juliusmarkwei_ecommerce:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/week4lab:latest
+                  docker tag juliusmarkwei_ecommerce:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/week4lab:juliusmarkwei_ecommerce_api
 
             - name: Push Docker Image to ECR
               run: |
-                  docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/week4lab:latest
+                  docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/week4lab:juliusmarkwei_ecommerce_api
