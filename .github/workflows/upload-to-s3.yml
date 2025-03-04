@@ -13,31 +13,25 @@ jobs:
             - name: Checkout Repository
               uses: actions/checkout@v4
 
-            - name: Install or Update AWS CLI
-              run: |
-                  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-                  unzip awscliv2.zip
-                  sudo ./aws/install --update
-                  aws --version
-
             - name: Configure AWS Credentials
-              run: |
-                  aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
-                  aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-                  aws configure set region ${{ secrets.AWS_REGION }}
+              uses: aws-actions/configure-aws-credentials@v2
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: us-east-1 # Public ECR is in us-east-1
 
-            - name: Login to Amazon ECR
+            - name: Login to Amazon ECR Public
               run: |
-                  aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+                  aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
 
             - name: Build Docker Image
               run: |
                   docker build -t juliusmarkwei_ecommerce .
 
-            - name: Tag Docker Image
+            - name: Tag Docker Image for Public ECR
               run: |
-                  docker tag juliusmarkwei_ecommerce:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/week4lab:juliusmarkwei_ecommerce_api
+                  docker tag juliusmarkwei_ecommerce:latest public.ecr.aws/week4lab/juliusmarkwei_ecommerce_api:latest
 
             - name: Push Docker Image to ECR
               run: |
-                  docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/week4lab:juliusmarkwei_ecommerce_api
+                  docker push public.ecr.aws/week4lab/juliusmarkwei_ecommerce_api:latest
