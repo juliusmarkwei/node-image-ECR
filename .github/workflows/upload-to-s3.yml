@@ -20,6 +20,10 @@ jobs:
                   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   aws-region: us-east-1 # Public ECR is in us-east-1
 
+            - name: Create ECR Public Repository if it does not exist
+              run: |
+                  aws ecr-public describe-repositories --repository-names week4lab || aws ecr-public create-repository --repository-name week4lab
+
             - name: Login to Amazon ECR Public
               run: |
                   aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
