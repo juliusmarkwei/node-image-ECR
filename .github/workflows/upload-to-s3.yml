@@ -37,7 +37,7 @@ jobs:
 
             - name: Tag Docker Image for Public ECR
               run: |
-                  docker tag week4lab:latest public.ecr.aws/j1n7u2e7/week4lab:juliusmarkwei_ecommerce_api
+                  docker tag week4lab:4.0.5 public.ecr.aws/j1n7u2e7/week4lab:juliusmarkwei_ecommerce_api
 
             - name: Push Docker Image to ECR
               run: |
