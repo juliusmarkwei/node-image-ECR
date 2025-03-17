@@ -15,7 +15,7 @@ app.use(morgan("dev"));
 app.get("/", (req, res) => {
 	res.json({
 		message:
-			"E-Commerce API Built and deployed with Express & Elastic Beanstalk Deployment",
+			"E-Commerce API Built and deployed with Express & Elastic Beanstalk Deployment Lab Review",
 		routes: ["/api/products", "/api/orders"],
 	});
 });
